@@ -3,7 +3,7 @@
  */
 export const registerDownloadComponent = (item, el, labelButtonDownload, allowDownloadByUrl) => {
     const info = el.querySelector('.filepond--file-info-main'),
-          downloadIcon = getDownloadIcon(labelButtonDownload);
+          downloadIcon = getDownloadIcon(labelButtonDownload, item, allowDownloadByUrl);
 
     info.prepend(downloadIcon);
 }
@@ -11,16 +11,16 @@ export const registerDownloadComponent = (item, el, labelButtonDownload, allowDo
 /**
  * Generates the download icon
  */
-export const getDownloadIcon = (labelButtonDownload) => {
+export const getDownloadIcon = (labelButtonDownload, item, allowDownloadByUrl) => {
 	let link = document.createElement('a');
 	let icon = document.createElement('span');
 	icon.className = 'filepond--download-icon';
 	icon.title = labelButtonDownload;
-	if (item.getMetadata('url')) {
-	link.href = item.getMetadata('url');
+	if (allowDownloadByUrl && item.getMetadata('url')) {
+		link.href = item.getMetadata('url');
 	} else {
-	link.href = window.URL.createObjectURL(item.file);
-	link.download = item.file.name;
+		link.href = window.URL.createObjectURL(item.file);
+		link.download = item.file.name;
 	}
 	link.appendChild(icon);
 	return link;
